@@ -11,14 +11,14 @@ def markov_switch(ts, p11, p22, regime1, regime2, err_std_dev, ergodic_probab=0.
 
     tp1000 = dec(p11).exp() / (dec(1.0) + dec(p11).exp())
     tp0001 = dec(p22).exp() / (dec(1.0) + dec(p22).exp())
-    tp0100 = dec(1.0) - dec(tp1000)
-    tp0010 = dec(1.0) - dec(tp0001)
+#    tp0100 = dec(1.0) - dec(tp1000) #spare for expansion
+#    tp0010 = dec(1.0) - dec(tp0001) #spare for expansion
     xittpo1, xittpo2 = np.zeros_like(ts), np.zeros_like(ts)
     xittpo1[-1], xittpo2[-1] =  ergodic_probab, ergodic_probab
 
     for i in range(ts.shape[0]):
-        eta1 = eta(dec(ts[i]), dec(regime1), dec(err_std_dev))
-        eta2 = eta(dec(ts[i]), dec(regime2), dec(err_std_dev))
+        eta1 = eta(ts[i], regime1, err_std_dev)
+        eta2 = eta(ts[i], regime2, err_std_dev)
         bt = dec(xittpo1[i - 1]) * dec(eta1) + dec(xittpo2[i - 1]) * dec(eta2)
         xitt1 = dec(xittpo1[i - 1]) * dec(eta1) / dec(bt)
         xitt2 = dec(xittpo2[i - 1]) * dec(eta2) / dec(bt)
