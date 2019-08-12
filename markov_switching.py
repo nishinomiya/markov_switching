@@ -15,7 +15,7 @@ def markov_switch(ts, p11, p22, regime1, regime2, err_std_dev, ergodic_probab=0.
     xittpo1, xittpo2 = np.zeros_like(ts), np.zeros_like(ts)
 
     eta1, eta2 = eta(dec(ts[0]), dec(regime1), dec(err_std_dev)), eta(dec(ts[0]), dec(regime2), dec(err_std_dev))
-    bt = dec(ergodic_probab) * dec(eta1) + (dec(1.0)- dec(ergodic_probab)) * dec(eta2)
+    bt = dec(ergodic_probab) * dec(eta1) + (dec(1.0) - dec(ergodic_probab)) * dec(eta2)
     xitt1,  xitt2 = (dec(ergodic_probab) * dec(eta1)) / dec(bt), ((dec(1.0) - dec(ergodic_probab)) * dec(eta2)) / dec(bt)
     xittpo1[0] = dec(xitt1) * dec(tp1000) + dec(xitt2) * (dec(1.0) - dec(tp0001))
     xittpo2[0] = dec(xitt2) * dec(tp0001) + dec(xitt1) * (dec(1.0) - dec(tp1000))
