@@ -1,5 +1,5 @@
-#environment
+#environment  
 python 3.7
 
-#title
+#title  
 markov switching demo for geometric random walk
