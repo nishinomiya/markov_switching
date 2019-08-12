@@ -26,19 +26,19 @@ def normalization(x):
     x -= np.nanmin(x)
     return x / np.nanmax(x)
 
-dn = np.random.choice([-1,1], size=1000)
+rc = np.random.choice([-1,1], size=1000)
 initial_price = 100
-grw = np.cumprod(np.exp(dn * 0.01)) * initial_price
+grw = np.cumprod(np.exp(rc * 0.01)) * initial_price
 grwalk = pd.Series(grw)
+log_returns = np.log(grwalk) - np.log(grwalk.shift(1))
+log_returns[0] = 0
 
-lr = np.log(grwalk) - np.log(grwalk.shift(1))
-lr[0] = 0
-lr = normalization(lr)
-f = np.percentile(lr, 90)
-s = np.percentile(lr, 10)
+log_returns = normalization(log_returns)
+f = np.percentile(log_returns, 90)
+s = np.percentile(log_returns, 10)
+xittpo = markov_switch(log_returns, 8, 8, f, s, np.mean(lr)*1.5)
 
-nprice = normalization(grwalk.values)
-xittpo = markov_switch(lr, 8, 8, f, s, np.mean(lr)*1.5)
+nprice = normalization(grw)
 plt.figure(figsize=(16, 4), dpi=100)
 plt.plot(xittpo)
 plt.plot(nprice)
