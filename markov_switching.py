@@ -26,9 +26,8 @@ def normalization(x):
     x -= np.nanmin(x)
     return x / np.nanmax(x)
 
-rc = np.random.choice([-1,1], size=1000)
-initial_price = 100
-grw = np.cumprod(np.exp(rc * 0.01)) * initial_price
+rc = np.random.choice([-1,1], size=720)
+grw = np.cumprod(np.exp(rc * 1e-2)) 
 grwalk = pd.Series(grw)
 log_returns = np.log(grwalk) - np.log(grwalk.shift(1))
 log_returns[0] = 0
@@ -36,7 +35,7 @@ log_returns[0] = 0
 log_returns = normalization(log_returns)
 f = np.percentile(log_returns, 90)
 s = np.percentile(log_returns, 10)
-xittpo = markov_switch(log_returns, 8, 8, f, s, np.mean(lr)*1.5)
+xittpo = markov_switch(log_returns, 8, 8, f, s, np.mean(log_returns)*1.5)
 
 nprice = normalization(grw)
 plt.figure(figsize=(16, 4), dpi=100)
