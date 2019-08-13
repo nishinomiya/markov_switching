@@ -31,8 +31,7 @@ def normalization(x):
     return x / np.nanmax(x)
 
 rc = np.random.choice([-1,1], size=1000)
-initial_price = 100
-grw = np.cumprod(np.exp(rc * 0.01)) * initial_price
+grw = np.cumprod(np.exp(rc * 1e-2)) * 1.0
 grwalk = pd.Series(grw)
 log_returns = np.log(grwalk) - np.log(grwalk.shift(1))
 log_returns[0] = 0
