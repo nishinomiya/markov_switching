@@ -41,7 +41,6 @@ xprobab = markov_switch(log_returns, 8, 8, f, s, np.mean(log_returns)*1.5)
 
 nprice = normalization(ts)
 plt.figure(figsize=(16, 4), dpi=100)
-
 plt.title('Regime switching')
 plt.plot(xprobab, label='regime')
 plt.plot(nprice, label='price')
