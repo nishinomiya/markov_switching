@@ -30,19 +30,22 @@ def normalization(x):
     x -= np.nanmin(x)
     return x / np.nanmax(x)
 
-rc = np.random.choice([-1,1], size=1000)
-grw = np.cumprod(np.exp(rc * 1e-2)) * 1.0
-grwalk = pd.Series(grw)
-log_returns = np.log(grwalk) - np.log(grwalk.shift(1))
-log_returns[0] = 0
+rc = np.random.choice([-1,1], size=1440)
+ts = np.cumprod(np.exp(rc * 1e-2)) * 1.0
+log_returns = np.log(ts[1:] / ts[:-1])
+log_returns =  np.r_[[0.0], log_returns]
 
 log_returns = normalization(log_returns)
 f = np.percentile(log_returns, 90)
 s = np.percentile(log_returns, 10)
 xprobab = markov_switch(log_returns, 8, 8, f, s, np.mean(log_returns)*1.5)
 
-nprice = normalization(grw)
+nprice = normalization(ts)
 plt.figure(figsize=(16, 4), dpi=100)
-plt.plot(xprobab)
-plt.plot(nprice)
+
+plt.title('Regime switching')
+plt.plot(xprobab, label='regime')
+plt.plot(nprice, label='price')
+plt.fill_between(range(ts.shape[0]), xprobab, [0]*ts.shape[0], alpha=0.3)
+plt.legend()
 plt.show()
