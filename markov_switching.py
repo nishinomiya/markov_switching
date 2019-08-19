@@ -10,20 +10,21 @@ def markov_switch(ts, p11, p22, regime1, regime2, err_std_div, ergodic_probab=0.
 
     tp1000 = dec(p11).exp() / (dec(1.0) + dec(p11).exp())
     tp0001 = dec(p22).exp() / (dec(1.0) + dec(p22).exp())
-#    tp0100 = dec(1.0) - dec(tp1000) #spare for expansion
-#    tp0010 = dec(1.0) - dec(tp0001) #spare for expansion
-    xprobab1, xprobab2 = np.zeros_like(ts), np.zeros_like(ts)
-    xprobab2[-1], xprobab2[-1] =  ergodic_probab, ergodic_probab
+    tp0100 = dec(1.0) - dec(tp1000) #spare for expansion
+    tp0010 = dec(1.0) - dec(tp0001) #spare for expansion
+    xi_tp1, xi_tp2 = np.zeros_like(ts), np.zeros_like(ts)
+    xi_tp1[-1], xi_tp2[-1] =  ergodic_probab, ergodic_probab
 
     for i in range(ts.shape[0]):
         eta1 = eta(ts[i], regime1, err_std_div)
         eta2 = eta(ts[i], regime2, err_std_div)
-        bt = dec(xprobab1[i - 1]) * dec(eta1) + dec(xprobab2[i - 1]) * dec(eta2)
-        xit1 = dec(xprobab1[i - 1]) * dec(eta1) / dec(bt)
-        xit2 = dec(xprobab2[i - 1]) * dec(eta2) / dec(bt)
-        xprobab1[i] = dec(xit1) * dec(tp1000) + dec(xit2) * (dec(1.0) - dec(tp0001))
-        xprobab2[i] = dec(xit2) * dec(tp0001) + dec(xit1) * (dec(1.0) - dec(tp1000))
-    return xprobab1
+        bt = dec(xi_tp1[i - 1]) * dec(eta1) + dec(xi_tp2[i - 1]) * dec(eta2)
+        xi_t1 = dec(xi_tp1[i - 1]) * dec(eta1) / dec(bt)
+        xi_t2 = dec(xi_tp2[i - 1]) * dec(eta2) / dec(bt)
+        xi_tp1[i] = dec(xi_t1) * dec(tp1000) + dec(xi_t2) * (dec(1.0) - dec(tp0001))
+        xi_tp2[i] = dec(xi_t2) * dec(tp0001) + dec(xi_t1) * (dec(1.0) - dec(tp1000))
+#        xprobab2[i] = dec(xit2) * dec(tp00１0) + dec(xitt1) * (dec(1.0) - dec(tp0100))
+    return xi_tp1
 
 def normalization(x):
     x -= np.nanmin(x)
