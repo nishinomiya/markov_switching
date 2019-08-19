@@ -1,6 +1,6 @@
 # Environment  
-Python 3.6
+Colaboratory / Python 3.6.8
 
 # About
-markov switching demo for geometric random walk  
-(regime switching model)
+Markov switching model demo for geometric random walk  
+(Regime Switching Model)
