@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from math import  pi
 from decimal import Decimal
 
-def markov_switch(ts, p11, p22, regime1, regime2, err_std_div, ergodic_probab=0.5):
+def markov_switch(ts, p11, p22, regime1, regime2, err_std_dev, ergodic_probab=0.5):
     dec = lambda x: Decimal(str(x))
     eta = lambda y, regime, esd:  dec(1.0) / dec(2.0 * pi * esd**2.0).sqrt() * \
                   dec(-dec((y - regime)**2.0) / (dec(2.0 * esd**2.0))).exp()
@@ -16,8 +16,8 @@ def markov_switch(ts, p11, p22, regime1, regime2, err_std_div, ergodic_probab=0.
     xi_tp1[-1], xi_tp2[-1] =  ergodic_probab, ergodic_probab
 
     for i in range(ts.shape[0]):
-        eta1 = eta(ts[i], regime1, err_std_div)
-        eta2 = eta(ts[i], regime2, err_std_div)
+        eta1 = eta(ts[i], regime1, err_std_dev)
+        eta2 = eta(ts[i], regime2, err_std_dev)
         bt = dec(xi_tp1[i - 1]) * eta1 + dec(xi_tp2[i - 1]) * eta2
         xi_t1 = dec(xi_tp1[i - 1]) * eta1 / bt
         xi_t2 = dec(xi_tp2[i - 1]) * eta2 / bt
